@@ -22,10 +22,19 @@ function addBook(){
         tahun: year.value,
         status: st.checked
     }
-    makeBookList(daftar, daftar.status);
+
+    const book = makeBookList(daftar, daftar.status);
+
+    if(daftar.status){
+        const bookList = document.getElementById(COMPLETE_ID);
+        bookList.append(book);
+    }
+    else{
+        const bookList = document.getElementById(UNCOMPLETE_ID);
+        bookList.append(book);
+    }
 
     console.log(daftar);
-
 }
 
 function makeBookList(a, isCompleted){
@@ -38,52 +47,32 @@ function makeBookList(a, isCompleted){
     const bookYear = document.createElement("p");
     bookYear.innerText = "Tahun : " +a.tahun;
 
+    const btn1 = document.createElement("button");
+    btn1.classList.add("green");
+    btn1.innerText = "Selesai dibaca";
+    
     const btn2 = document.createElement("button");
     btn2.classList.add("red");
     btn2.innerText = "Hapus buku";
 
     const btn3 = document.createElement("button");
     btn3.classList.add("green");
-    btn3.innerText = "Belum Selesai";
+    btn3.innerText = "Belum selesai";
 
     const act = document.createElement("div");
     act.classList.add("action");
 
     if(isCompleted){
-        const bookList = document.getElementById(COMPLETE_ID);
-        const art = document.createElement("article");
-
-        art.classList.add("book_item");
-        art.append(bookTitle,bookTitle,bookYear,act);
         act.append(btn3, btn2);
-        bookList.append(art);
-
-        return bookList;
     }
     else{
-        const bookList = document.getElementById(UNCOMPLETE_ID);
-        const art = document.createElement("article");
-        
-        art.classList.add("book_item");
-        art.append(bookTitle,bookTitle,bookYear,act);
-        act.append(selesaiButton(a),btn2);
-        bookList.append(art);
-
-        return bookList;
+        act.append(btn1,btn2);
     }
+
+    const art = document.createElement("article");
+    art.classList.add("book_item");
+    art.append(bookTitle,bookAuthor,bookYear,act);
+
+    return art;
 }
 
-function selesaiButton(a){
-    const btn = document.createElement("button");
-    btn.classList.add("green");
-    btn.innerText = "Selesai Dibaca";
-
-    btn.addEventListener("click", function(){
-        const task = a.id;
-        const bookList = document.getElementById(COMPLETE_ID);
-        bookList.append(makeBookList(a, true));
-        console.log(task);
-    });
-
-    return btn;
-}
