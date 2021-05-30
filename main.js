@@ -55,23 +55,15 @@ function makeBookList(a, isCompleted){
     bookYear.classList.add("tahun");
     bookYear.innerText = "Tahun : " +a.tahun;
 
-    const btn1 = document.createElement("button");
-    btn1.classList.add("green");
-    btn1.innerText = "Selesai dibaca";
-    
     const btn2 = document.createElement("button");
     btn2.classList.add("red");
     btn2.innerText = "Hapus buku";
-
-    const btn3 = document.createElement("button");
-    btn3.classList.add("green");
-    btn3.innerText = "Belum selesai";
 
     const art = document.createElement("article");
     art.classList.add("book_item");
 
     if(isCompleted){
-        art.append(bookTitle,bookAuthor,bookYear,btn3,btn2);
+        art.append(id,bookTitle,bookAuthor,bookYear,undoButton(),btn2);
     }
     else{
         art.append(id,bookTitle,bookAuthor,bookYear,finishButton(),btn2);
@@ -101,10 +93,10 @@ function addToCompleted(taskElement){
         judul: taskElement.querySelector(".judul").innerText,
         penulis: taskElement.querySelector(".penulis").innerText.substr(10,nPenulis),
         tahun: taskElement.querySelector(".tahun").innerText.substr(8,nTahun),
-        status: false
+        status: true
     }
 
-    const newBook = makeBookList(daftar,status)
+    const newBook = makeBookList(daftar,daftar.status)
     listCompleted.append(newBook);
     taskElement.remove();
 }
@@ -112,5 +104,30 @@ function addToCompleted(taskElement){
 function finishButton(){
     return createButton("green", "Selesai dibaca", function(event){
         addToCompleted(event.target.parentElement);
+    });
+}
+
+function undoFromCompleted(taskElement){
+    const listCompleted = document.getElementById(UNCOMPLETE_ID);
+    const nPenulis = taskElement.querySelector(".penulis").innerText.length;
+    const nTahun = taskElement.querySelector(".tahun").innerText.length;
+
+    const daftar = {
+        id: taskElement.querySelector(".id").innerText,
+        judul: taskElement.querySelector(".judul").innerText,
+        penulis: taskElement.querySelector(".penulis").innerText.substr(10,nPenulis),
+        tahun: taskElement.querySelector(".tahun").innerText.substr(8,nTahun),
+        status: false
+    }
+
+    const newBook = makeBookList(daftar,daftar.status)
+    listCompleted.append(newBook);
+    
+    taskElement.remove();
+}
+
+function undoButton(){
+    return createButton("green", "Belum Selesai", function(event){
+        undoFromCompleted(event.target.parentElement);
     });
 }
