@@ -53,3 +53,12 @@ function findBookIndex(bookId){
     }
     return -1;
 }
+
+function findBookTitle(title){
+    for(book of books){
+        if(book.judul.toLowerCase() === title.toLowerCase()){
+            return book;
+        }
+        return null;
+    }
+}

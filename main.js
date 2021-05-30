@@ -39,6 +39,22 @@ function refreshData(){
     }
 }
 
+function refreshData2(){
+    for(book of books){
+        const newBook = makeBookList(book, book.status);
+        newBook[BOOK_ID] = book.judul;
+
+        if(book.status){
+            const bookList = document.getElementById(COMPLETE_ID);
+            bookList.append(newBook);
+        }
+        else{
+            const bookList = document.getElementById(UNCOMPLETE_ID);
+            bookList.append(newBook);
+        }
+    }
+}
+
 function addBook(){
     const title = document.querySelector("#inputBookTitle");
     const author = document.querySelector("#inputBookAuthor");
@@ -182,5 +198,16 @@ function removeButton(){
 
         task.remove();
         updateData();
+    });
+}
+
+function searchBook(){
+    const inputSearch = document.getElementById("searchBookTitle").value;
+    const searchBook = document.getElementById("searchBook");
+
+    searchBook.addEventListener("submit", function(event){
+        event.preventDefault();
+        findBookTitle(inputSearch);
+        refreshData2();
     });
 }
