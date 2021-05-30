@@ -1,5 +1,6 @@
 const UNCOMPLETE_ID = "incompleteBookshelfList";
 const COMPLETE_ID = "completeBookshelfList";
+const BOOK_ID = "bookId";
 
 document.addEventListener("DOMContentLoaded", function(){
     const submitForm = document.getElementById("inputBook");
@@ -8,7 +9,35 @@ document.addEventListener("DOMContentLoaded", function(){
         event.preventDefault();
         addBook();
     });
+
+    if(cekStorage()){
+        loadData();
+    }
 });
+
+document.addEventListener("onddatasaved", () => {
+    console.log("Data berhasil disimpan");
+});
+
+document.addEventListener("ondataloaded", () => {
+    refreshData();
+});
+
+function refreshData(){
+    for(book of books){
+        const newBook = makeBookList(book, book.status);
+        newBook[BOOK_ID] = book.id;
+
+        if(book.status){
+            const bookList = document.getElementById(COMPLETE_ID);
+            bookList.append(newBook);
+        }
+        else{
+            const bookList = document.getElementById(UNCOMPLETE_ID);
+            bookList.append(newBook);
+        }
+    }
+}
 
 function addBook(){
     const title = document.querySelector("#inputBookTitle");
@@ -25,6 +54,9 @@ function addBook(){
 
     const book = makeBookList(daftar, daftar.status);
 
+    book[BOOK_ID] = daftar.id;
+    books.push(daftar);
+
     if(daftar.status){
         const bookList = document.getElementById(COMPLETE_ID);
         bookList.append(book);
@@ -35,6 +67,7 @@ function addBook(){
     }
 
     console.log(daftar);
+    updateData();
 }
 
 function makeBookList(a, isCompleted){
@@ -92,9 +125,16 @@ function addToCompleted(taskElement){
         status: true
     }
 
-    const newBook = makeBookList(daftar,daftar.status)
+    const newBook = makeBookList(daftar,daftar.status);
+    const book = findBook(taskElement[BOOK_ID]);
+    book.status = daftar.status;
+
+    newBook[BOOK_ID] = book.id;
+
     listCompleted.append(newBook);
     taskElement.remove();
+
+    updateData();
 }
 
 function finishButton(){
@@ -116,10 +156,16 @@ function undoFromCompleted(taskElement){
         status: false
     }
 
-    const newBook = makeBookList(daftar,daftar.status)
+    const newBook = makeBookList(daftar,daftar.status);
+    const book = findBook(taskElement[BOOK_ID]);
+    book.status = daftar.status;
+
+    newBook[BOOK_ID] = book.id;
+
     listCompleted.append(newBook);
-    
     taskElement.remove();
+
+    updateData();
 }
 
 function undoButton(){
@@ -130,7 +176,11 @@ function undoButton(){
 
 function removeButton(){
     return createButton("red", "Hapus Buku", function(event){
-        const ev = event.target.parentElement;
-        ev.remove();
+        const task = event.target.parentElement;
+        const bookPosition = findBookIndex(task[BOOK_ID]);
+        books.splice(bookPosition,1);
+
+        task.remove();
+        updateData();
     });
 }
