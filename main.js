@@ -55,18 +55,14 @@ function makeBookList(a, isCompleted){
     bookYear.classList.add("tahun");
     bookYear.innerText = "Tahun : " +a.tahun;
 
-    const btn2 = document.createElement("button");
-    btn2.classList.add("red");
-    btn2.innerText = "Hapus buku";
-
     const art = document.createElement("article");
     art.classList.add("book_item");
 
     if(isCompleted){
-        art.append(id,bookTitle,bookAuthor,bookYear,undoButton(),btn2);
+        art.append(id,bookTitle,bookAuthor,bookYear,undoButton(),removeButton());
     }
     else{
-        art.append(id,bookTitle,bookAuthor,bookYear,finishButton(),btn2);
+        art.append(id,bookTitle,bookAuthor,bookYear,finishButton(),removeButton());
     }
 
     return art;
@@ -129,5 +125,12 @@ function undoFromCompleted(taskElement){
 function undoButton(){
     return createButton("green", "Belum Selesai", function(event){
         undoFromCompleted(event.target.parentElement);
+    });
+}
+
+function removeButton(){
+    return createButton("red", "Hapus Buku", function(event){
+        const ev = event.target.parentElement;
+        ev.remove();
     });
 }
