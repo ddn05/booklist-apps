@@ -161,12 +161,18 @@ main {
     cursor: pointer;
 }
 
-.book_shelf > .book_list > .book_item > .action > .green {
+.book_shelf > .book_list > .book_item > .green {
+    margin: 3px;
+    padding: 4px;
+    border: none;
     background-color: darkgreen;
     color: white;
 }
 
-.book_shelf > .book_list > .book_item > .action > .red {
+.book_shelf > .book_list > .book_item > .red {
+    margin: 3px;
+    padding: 4px;
+    border: none;
     background-color: darkred;
     color: white;
 }
