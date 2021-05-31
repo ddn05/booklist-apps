@@ -39,8 +39,8 @@ function findBook(bookId){
         if(book.id === bookId){
             return book;
         }
-        return null;
     }
+    return null;
 }
 
 function findBookIndex(bookId){
@@ -59,6 +59,6 @@ function findBookTitle(title){
         if(book.judul.toLowerCase() === title.toLowerCase()){
             return book;
         }
-        return null;
     }
+    return null;
 }
